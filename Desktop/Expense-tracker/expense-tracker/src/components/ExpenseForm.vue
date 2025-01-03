@@ -22,7 +22,8 @@
   import { ref, watch, defineEmits, defineProps } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
-  
+  import { VDateInput } from 'vuetify/labs/VDateInput'
+
   const emit = defineEmits(['add-expense', 'reset-edit']);
   const props = defineProps({
     editingExpense: { type: Object, required: false },
@@ -62,7 +63,7 @@
   };
   
   const handleSubmit = async () => {
-  if (!amount.value || !description.value || !category.value || !date.value) {
+  if (!amount.value || !description.value || !category.value) {
     console.log('Please fill in all fields.');
     return;
   }

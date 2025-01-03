@@ -2,7 +2,7 @@
     <v-data-table
       :headers="headers"
       :items="expenses"
-      item-value="id"
+      item-value="expense_id"
       :items-per-page="itemsPerPage"
         v-model:page="currentPage"
     >
@@ -27,7 +27,7 @@ const emitEditExpense = (expense) => emit('edit-expense', expense);
 const emitDeleteExpense = (id) => emit('delete-expense', id);
 
   const headers = [
-    {title:'id',key:'id'},
+    {title:'id',key:'expense_id'},
     { title: 'Amount', key: 'amount', align: 'end' },
     { title: 'Description', key: 'description', align: 'end' },
     { title: 'Category', key: 'category', align: 'end' },
