@@ -4,6 +4,7 @@ import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
 import jwt from 'jsonwebtoken'
 import Env from '@ioc:Adonis/Core/Env'
+import BlacklistedToken from 'App/Models/BlacklistedToken'
 
 
 
@@ -63,6 +64,7 @@ export default class AuthController {
                 return response.unauthorized({message:'Invalid credentials'})
             }
             
+            
 
             const token=jwt.sign(
                 {id:user.id,email:user.email},
@@ -80,14 +82,22 @@ export default class AuthController {
     }
 
 
-    public async  logout({auth,response}:HttpContextContract){
-        try{
-            await auth.use('api').revoke()
-            return response.ok({message:"logout successful"})
+    public async logout({request,response}:HttpContextContract){
+        const token=request.header('Authorization')?.split(' ')[1]
+        if (token) {
+            try {
+                // Blacklist the token by saving it to the database
+                await BlacklistedToken.create({ token });
+                
+                return response.json({
+                    message: "Logged out successfully",
+                });
+            } catch (error) {
+                console.error('Error while blacklisting token:', error);
+                return response.status(500).json({ message: "Error during logout. Please try again." });
+            }
         }
-        catch (error) {
-            console.error('Logout error:', error);
-            return response.internalServerError({ message: 'Failed to logout' });
-          }
+        
+        return response.unauthorized({ message: 'Token not provided' });
     }
 }
