@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@vuepic/vue-datepicker": "^10.0.0",
     "axios": "^1.7.9",
     "vue": "^3.2.13",
     "vue-router": "^4.5.0",

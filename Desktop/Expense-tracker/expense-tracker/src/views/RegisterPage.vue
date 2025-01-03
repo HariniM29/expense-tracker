@@ -19,6 +19,7 @@
     <div v-if="successMessage" style="color: green;">
       {{ successMessage }}
     </div>
+
   </div>
 </template>
 <script setup lang="ts">
@@ -62,4 +63,6 @@ const handleRegister=async ()=>{
         }
     }
 }
+
+
 </script>

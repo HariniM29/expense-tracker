@@ -10,8 +10,13 @@
     <div>
         <button @click="handleLogin">Login</button>
     </div>
+    
+    
     <div v-if="errorMessage" style="color: red;">
         {{ errorMessage }}
+    </div>
+    <div v-if="successMessage" style="color: red;">
+        {{ successMessage }}
     </div>
 </div>
 </template>
@@ -22,6 +27,7 @@ import {useRouter} from 'vue-router'
 const email=ref('')
 const password=ref('')
 const errorMessage=ref('')
+const successMessage=ref('');
 
 const router=useRouter();
 const handleLogin=async ()=>{
@@ -36,7 +42,9 @@ const handleLogin=async ()=>{
             { headers: { 'Content-Type': 'application/json' } }
         );
         if(response.status===200){
-            router.push('/register-page');
+            const token=response.data.token
+            localStorage.setItem('jwtToken',token)
+            router.push('/dashboard-page');
         }
         console.log(email.value, password.value)
 
@@ -47,6 +55,8 @@ const handleLogin=async ()=>{
         }
     }
 }
+
+
 
 
 </script>
