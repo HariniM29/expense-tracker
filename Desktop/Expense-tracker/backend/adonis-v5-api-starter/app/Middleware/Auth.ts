@@ -1,5 +1,5 @@
   import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-  import jwt from 'jsonwebtoken'
+  import jwt,{JwtPayload} from 'jsonwebtoken'
   import Env from '@ioc:Adonis/Core/Env'
   import BlacklistedToken from 'App/Models/BlacklistedToken'
 
@@ -22,7 +22,7 @@
         }
     
 
-        const decoded=jwt.verify(token,JWT_SECRET)
+        const decoded=jwt.verify(token,JWT_SECRET) as JwtPayload & { id: number; email: string }
         console.log("decoded",decoded)
         const isBlacklisted=await BlacklistedToken.findBy('token',token)
         if(isBlacklisted){

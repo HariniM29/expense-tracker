@@ -18,13 +18,19 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
-import AuthController from 'App/Controllers/Http/AuthController'
+  import Route from '@ioc:Adonis/Core/Route'
+  import AuthController from 'App/Controllers/Http/AuthController'
+  import ExpensesController from 'App/Controllers/Http/ExpensesController'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+  Route.get('/', async () => {
+    return { hello: 'world' }
+  })
 
-Route.post('/api/login','AuthController.login')
-Route.post('/api/register', 'AuthController.register') 
-Route.post('/api/logout','AuthController.logout').middleware('auth')  
+  Route.post('/api/login','AuthController.login')
+  Route.post('/api/register', 'AuthController.register') 
+  Route.post('/api/logout','AuthController.logout').middleware('auth')  
+  Route.post('/expenses', 'ExpensesController.store').middleware('auth')
+  Route.get('/expenses', 'ExpensesController.index').middleware('auth')
+  Route.delete('/expenses/:id', 'ExpensesController.destroy').middleware('auth')
+  Route.patch('/expenses/:id', 'ExpensesController.update').middleware('auth')
+  Route.get('/expenses/all', 'ExpensesController.getAllExpenses')

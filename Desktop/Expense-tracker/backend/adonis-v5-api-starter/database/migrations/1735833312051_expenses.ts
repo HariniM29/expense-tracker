@@ -5,10 +5,11 @@ export default class extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('expenseId')
+      table.increments('expense_id')
       table.float('amount')
       table.string('description')
-      table.string('category') 
+      // table.string('category') 
+      table.enu('category', ['Food', 'Transport', 'Entertainment', 'Utilities', 'Others']).notNullable()
       table.date('date')
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.timestamps(true, true)

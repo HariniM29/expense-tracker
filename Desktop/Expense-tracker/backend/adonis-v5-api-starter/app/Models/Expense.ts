@@ -3,6 +3,7 @@ import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import { BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import { belongsTo } from '@ioc:Adonis/Lucid/Orm'
+import { Category } from 'App/types/enum'
 export default class Expense extends BaseModel {
   @column({ isPrimary: true })
   public expenseId: number
@@ -13,14 +14,17 @@ export default class Expense extends BaseModel {
   @column()
   public description: string
 
+  // @column()
+  // public category: string
+
   @column()
-  public category: string
+  public category: Category;
 
   @column.date()
   public date: DateTime
 
   @column()
-  public userId: number
+  public user_id: number
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User> 

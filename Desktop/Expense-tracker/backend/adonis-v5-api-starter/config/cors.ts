@@ -44,7 +44,8 @@ const corsConfig: CorsConfig = {
   |                     one of the above values.
   |
   */
-  origin: true,
+  // origin: true,
+  origin: '*',
 
   /*
   |--------------------------------------------------------------------------
@@ -56,7 +57,9 @@ const corsConfig: CorsConfig = {
   |
   | Following is the list of default methods. Feel free to add more.
   */
-  methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+  // methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH'],
+
 
   /*
   |--------------------------------------------------------------------------
@@ -75,7 +78,9 @@ const corsConfig: CorsConfig = {
   | Function          - Receives the current header and should return one of the above values.
   |
   */
-  headers: true,
+  // headers: true,
+  headers: ['Content-Type', 'Authorization', 'Accept'],
+
 
   /*
   |--------------------------------------------------------------------------
