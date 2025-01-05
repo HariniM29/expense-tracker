@@ -2,14 +2,26 @@
   <v-btn @click="toggleFormVisibility" color="primary">
     {{ showForm ? 'Close Form' : 'Add New Expense' }}
   </v-btn>
+
+  <v-text-field v-model="search" label="Search" @input="updateSearch"></v-text-field>
+  
+  <!-- Category Filter -->
+  <v-select
+    v-model="selectedCategory"
+    :items="categories"
+    label="Category"
+    @change="updateCategory"  
+  ></v-select>
+
   <ExpenseTable
-    :expenses="expenses"
+    :expenses="filteredExpenses"  
     :current-page="currentPage"
     :items-per-page="itemsPerPage"
     @update:current-page="updateCurrentPage"
     @delete-expense="deleteExpense"
     @edit-expense="editExpense"
   ></ExpenseTable>
+
   <ExpenseForm
     v-if="showForm"
     @add-expense="fetchExpenses"
@@ -29,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import ExpenseTable from '@/components/ExpenseTable.vue';
@@ -43,10 +55,32 @@ const showForm = ref(false);
 const editingExpense = ref(null);
 const currentPage = ref(1);
 const itemsPerPage = ref(4);
+const search = ref('');
+const selectedCategory = ref('');
+const categories = ['Food', 'Transport', 'Entertainment', 'Utilities', 'Others'];
+
+const updateSearch = () => {
+  fetchExpenses();  // Re-fetch when search term changes
+};
+
+const updateCategory = () => {
+  fetchExpenses();  // Re-fetch when category changes
+};
 
 const toggleFormVisibility = () => {
   showForm.value = !showForm.value;
 };
+
+// Computed property to filter expenses based on category and search
+const filteredExpenses = computed(() => {
+  return expenses.value.filter((expense) => {
+    const matchesSearch = expense.description.toLowerCase().includes(search.value.toLowerCase()) || 
+                          expense.category.toLowerCase().includes(search.value.toLowerCase());
+    const matchesCategory = selectedCategory.value ? expense.category === selectedCategory.value : true;
+    
+    return matchesSearch && matchesCategory;
+  });
+});
 
 const fetchExpenses = async () => {
   try {
@@ -57,7 +91,12 @@ const fetchExpenses = async () => {
     }
 
     const response = await axios.get('http://127.0.0.1:3333/expenses', {
-      params: { page: currentPage.value, limit: itemsPerPage.value },
+      params: {
+        page: currentPage.value,
+        limit: itemsPerPage.value,
+        search: search.value,
+        category: selectedCategory.value,
+      },
       headers: { Authorization: `Bearer ${token}` },
     });
 

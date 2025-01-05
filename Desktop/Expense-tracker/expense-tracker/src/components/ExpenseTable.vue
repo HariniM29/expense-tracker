@@ -38,7 +38,7 @@ const internalPage = ref(props.currentPage);
 
 watch(
   () => props.currentPage,
-  (newValue) => {
+  (newValue) => { 
     internalPage.value = newValue;
   }
 );
