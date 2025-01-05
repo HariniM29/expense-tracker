@@ -2,22 +2,52 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import Expense from 'App/Models/Expense'
 import { Category } from 'App/types/enum';
-import { TopologyDescription } from 'mongodb';
 export default class ExpenseController {
 
-    public async getAllExpenses({ request,response }: HttpContextContract) {
+    // public async getAllExpenses({ request,response }: HttpContextContract) {
         
-        try{
-            const page=request.input('page',1)
-            const limit=request.input('limit',10);
-            const expenses=await Expense.query().paginate(page,limit)
-            return response.json({expenses})
-        }
-        catch(error){
-            return response.status(500).json({ message: "An error occurred while retrieving all expenses" });
-        }
+    //     try{
+    //         const page=request.input('page',1)
+    //         const limit=request.input('limit',10);
+    //         const expenses=await Expense.query().paginate(page,limit)
+    //         return response.json({expenses})
+    //     }
+    //     catch(error){
+    //         return response.status(500).json({ message: "An error occurred while retrieving all expenses" });
+    //     }
 
+    // }
+
+
+    public async getAllExpenses({ request, response }: HttpContextContract) {
+      try {
+          // Get the search and filter parameters from the request
+          const search = request.input('search', '');
+          const category = request.input('category', '');
+          const page = request.input('page', 1);
+          const limit = request.input('limit', 10);
+    
+          let query = Expense.query();
+      
+          // Apply the search filter (search by description or other fields)
+          if (search) {
+              query = query.where('description', 'LIKE', `%${search}%`);
+          }
+    
+          // Apply the category filter
+          if (category) {
+              query = query.where('category', category);
+          }
+    
+          // Fetch the expenses with pagination
+          const expenses = await query.paginate(page, limit);
+    
+          return response.json({ expenses });
+      } catch (error) {
+          return response.status(500).json({ message: "An error occurred while retrieving expenses" });
+      }
     }
+    
     
     public async index({request,response}:HttpContextContract){
         try{
