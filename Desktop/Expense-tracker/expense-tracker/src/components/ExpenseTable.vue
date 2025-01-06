@@ -12,14 +12,6 @@
         <v-btn @click="emitDeleteExpense(item)">Delete</v-btn>
       </template>
     </v-data-table>
-
-    <!-- Only one pagination component here -->
-    <!-- <v-pagination
-      v-model="internalPage"
-      :length="pageCount"
-      :show-first-last-page="true"
-      @input="emitPageUpdate"
-    ></v-pagination> -->
   </div>
 </template>
 

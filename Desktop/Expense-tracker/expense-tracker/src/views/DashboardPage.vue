@@ -1,95 +1,82 @@
 <template>
-  <v-btn @click="toggleFormVisibility" color="primary">
-    {{ showForm ? 'Close Form' : 'Add New Expense' }}
-  </v-btn>
+  <v-container>
+    <!-- Add Button -->
+    <v-btn @click="toggleFormVisibility" color="primary">
+      {{ showForm ? 'Close Form' : 'Add New Expense' }}
+    </v-btn>
 
-  <v-text-field v-model="search" label="Search" @input="updateSearch"></v-text-field>
-  
-  <!-- Category Filter -->
-  <v-select
-    v-model="selectedCategory"
-    :items="categories"
-    label="Category"
-    @change="updateCategory"  
-  ></v-select>
+    <!-- Search and Category Filter -->
+    <v-text-field v-model="search" label="Search"></v-text-field>
+    <v-select
+      v-model="selectedCategory"
+      :items="categories"
+      label="Category"
+    ></v-select>
 
-  <ExpenseTable
-    :expenses="filteredExpenses"  
-    :current-page="currentPage"
-    :items-per-page="itemsPerPage"
-    @update:current-page="updateCurrentPage"
-    @delete-expense="deleteExpense"
-    @edit-expense="editExpense"
-  ></ExpenseTable>
+    <!-- Expense Table -->
+    <ExpenseTable
+      :expenses="filteredExpenses"
+      :current-page="currentPage"
+      :items-per-page="itemsPerPage"
+      @update:current-page="updateCurrentPage"
+      @delete-expense="deleteExpense"
+      @edit-expense="editExpense"
+    ></ExpenseTable>
 
-  <ExpenseForm
-    v-if="showForm"
-    @add-expense="fetchExpenses"
-    :editing-expense="editingExpense"
-    @reset-edit="resetEditing"
-  ></ExpenseForm>
-
-  <div v-if="errorMessage" style="color: red;">
-    {{ errorMessage }}
-  </div>
-  <div v-if="successMessage" style="color: green;">
-    {{ successMessage }}
-  </div>
-  <div>
-    <button @click="handleLogout">Logout</button>
-  </div>
+    <!-- Expense Form Modal -->
+    <v-dialog v-model="showForm" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">{{ editingExpense ? 'Edit Expense' : 'Add New Expense' }}</span>
+        </v-card-title>
+        <v-card-text>
+          <ExpenseForm
+            :editingExpense="editingExpense"
+            @add-expense="fetchExpenses"
+            @reset-edit="resetEditing"
+          ></ExpenseForm>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="blue darken-1" text @click="toggleFormVisibility">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, computed } from 'vue';
 import ExpenseTable from '@/components/ExpenseTable.vue';
 import ExpenseForm from '@/components/ExpenseForm.vue';
+import axios from 'axios';
 
-const router = useRouter();
 const expenses = ref([]);
-const errorMessage = ref('');
-const successMessage = ref('');
-const showForm = ref(false);
-const editingExpense = ref(null);
-const currentPage = ref(1);
-const itemsPerPage = ref(4);
 const search = ref('');
 const selectedCategory = ref('');
+const showForm = ref(false);
+const editingExpense = ref(null); // Holds the expense being edited
+const currentPage = ref(1);
+const itemsPerPage = ref(4);
 const categories = ['Food', 'Transport', 'Entertainment', 'Utilities', 'Others'];
 
-const updateSearch = () => {
-  fetchExpenses();  // Re-fetch when search term changes
-};
-
-const updateCategory = () => {
-  fetchExpenses();  // Re-fetch when category changes
-};
-
+// Toggle visibility of the form
 const toggleFormVisibility = () => {
   showForm.value = !showForm.value;
 };
 
-// Computed property to filter expenses based on category and search
+// Filtered expenses based on search and category
 const filteredExpenses = computed(() => {
-  return expenses.value.filter((expense) => {
-    const matchesSearch = expense.description.toLowerCase().includes(search.value.toLowerCase()) || 
-                          expense.category.toLowerCase().includes(search.value.toLowerCase());
+  return expenses.value.filter(expense => {
+    const matchesSearch = expense.description.toLowerCase().includes(search.value.toLowerCase());
     const matchesCategory = selectedCategory.value ? expense.category === selectedCategory.value : true;
-    
     return matchesSearch && matchesCategory;
   });
 });
 
+// Fetch expenses from the API
 const fetchExpenses = async () => {
   try {
     const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      errorMessage.value = 'User not authenticated.';
-      return;
-    }
-
     const response = await axios.get('http://127.0.0.1:3333/expenses', {
       params: {
         page: currentPage.value,
@@ -99,73 +86,37 @@ const fetchExpenses = async () => {
       },
       headers: { Authorization: `Bearer ${token}` },
     });
-
     expenses.value = response.data.expenses;
   } catch (error) {
     console.error('Error fetching expenses:', error);
-    errorMessage.value = 'Failed to load expenses.';
   }
 };
 
+// Handle expense deletion
 const deleteExpense = async (expense) => {
   try {
     const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      errorMessage.value = 'User not authenticated.';
-      return;
-    }
-
     await axios.delete(`http://127.0.0.1:3333/expenses/${expense.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-
-    successMessage.value = 'Expense deleted successfully.';
-    fetchExpenses(); // Refresh the expenses list
+    fetchExpenses();
   } catch (error) {
     console.error('Error deleting expense:', error);
-    errorMessage.value = 'Failed to delete expense.';
   }
 };
 
+// Handle expense editing
 const editExpense = (expense) => {
-  editingExpense.value = expense;
-  showForm.value = true;
+  editingExpense.value = { ...expense }; // Clone the expense to avoid direct mutation
+  toggleFormVisibility(); // Open the form modal
 };
 
+// Reset editing mode
 const resetEditing = () => {
-  editingExpense.value = null;
-  showForm.value = false;
+  editingExpense.value = null; // Reset editing expense
+  toggleFormVisibility(); // Close the form modal
 };
 
-const handleLogout = async () => {
-  try {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      errorMessage.value = 'Already logged out.';
-      return;
-    }
-
-    await axios.post(
-      'http://127.0.0.1:3333/api/logout',
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    localStorage.removeItem('jwtToken');
-    successMessage.value = 'Logged out successfully.';
-    router.push('/login-page');
-  } catch (error) {
-    console.error('Error during logout:', error);
-    errorMessage.value = 'Failed to log out.';
-  }
-};
-
-const updateCurrentPage = (newPage) => {
-  currentPage.value = newPage;
-};
-
-// Watch for changes in `currentPage` and refetch expenses
-watch(currentPage, fetchExpenses);
 
 onMounted(fetchExpenses);
 </script>
