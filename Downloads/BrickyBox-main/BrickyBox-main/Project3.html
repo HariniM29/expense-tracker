@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <link rel="shortcut icon" href="images/logo.png" type="favicon" />
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap-grid.css">
+    <link rel="stylesheet" href="animate.css">
+    <link rel="stylesheet" href="odometer.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Bricky Box Associates</title>
+</head>
+<style>
+    .intro {
+  background: url("./images/UmasKitchen/insidebanner.JPG")   ;
+  background-size:100%;
+  
+
+  
+ 
+}
+
+    :root {
+  --white: #fff;
+  --black: #111;
+  --accent-color: #8257E5;
+}
+
+
+img {
+  width: 100%;
+}
+
+/* HEADER */
+header {
+  height: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header h1.title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+header h2.second-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+/* .gallery */
+.gallery {
+  text-align: center;
+  padding: 2rem 3%;
+}
+
+.gallery img:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.gallery img {
+  cursor: pointer;
+  transition: opacity 400ms;
+}
+
+.gallery img:hover {
+  opacity: 0.9;
+}
+
+
+
+/* ANIMATIONS */
+header h1.title {
+  animation: rise 300ms backwards ease-out;
+}
+
+header h2.second-title {
+  animation: rise 400ms backwards ease-out;
+}
+
+.gallery img {
+  animation: rise 400ms ease-out backwards;
+  animation-play-state: paused;
+  animation-delay: 300ms;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+}
+
+/* MEDIA QUERIES */
+/* Tablets */
+@media screen and (min-width: 480px) {
+  .gallery {
+    padding: 2rem 10% 10%;
+  }
+}
+
+/* Small Screens, laptops */
+@media screen and (min-width: 768px) {
+  /* HEADER */
+  header {
+    height: 30rem;
+  }
+
+  header h1.title {
+    font-size: 4.8rem;
+  }
+
+  header h2.second-title {
+    font-size: 3.4rem;
+    margin-top: 1rem;
+  }
+  
+  /*  .gallery */
+  .gallery {
+    columns: 2;
+    column-gap: 1rem;
+    padding: 2rem 10% 10%;
+  }
+}
+
+/* Desktop, large screens */
+@media screen and (min-width: 1024px) {
+  /* HEADER */
+  header {
+    height: 50rem;
+  }
+
+  header h1.title {
+    font-size: 4.8rem;
+  }
+
+  header h2.second-title {
+    font-size: 3.4rem;
+    margin-top: 1rem;
+  }
+  
+  /*  .gallery */
+  .gallery {
+    columns: 3;
+    column-gap: 1.5rem;
+    padding: 2rem 10% 10%;
+  }
+}
+</style>
+
+<body>
+    <main class="container-fluid p-0">
+        <nav class="container-fluid">
+            <div class="container-xl">
+                <a href="index.html" class="logo">
+                    <img src="logo.png" alt="">
+                </a>
+                <a href="index.html">Home</a>
+                
+                
+                <a href="https://wa.me/9840279082" target="_blank">Let's Talk</a>
+                <div class="menu" id="menu-icon">
+                    
+                  <img src="images/whatsapp.png" alt="Menu" onclick="openWhatsApp()">
+                  <img src="images/download 3.png" alt="Menu" onclick="downloadBrochure()">
+              </div>
+           
+
+<script>
+function openWhatsApp() {
+  window.open("https://wa.me/9840279082", "_blank");
+}
+
+function downloadBrochure() {
+  const link = document.createElement("a");
+  link.href = "BRICKY BOX ASSOCIATES.pdf.pdf";
+  link.download = "BRICKY BOX ASSOCIATES.pdf.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script>
+            </div>
+        </nav>
+        <script>
+// Open/Close the menu when the hamburger icon is clicked
+document.querySelector('.menu').addEventListener('click', function () {
+    const menuContainer = document.querySelector('.menu_container');
+    if (menuContainer.style.display === 'block') {
+        menuContainer.style.display = 'none';
+    } else {
+        menuContainer.style.display = 'block';
+    }
+});
+
+// Close the menu when any link inside the menu container is clicked
+document.querySelectorAll('.menu_container a').forEach(function (link) {
+    link.addEventListener('click', function () {
+        document.querySelector('.menu_container').style.display = 'none';
+    });
+});
+
+
+        </script>
+        <section class="intro">
+            <div class="container-xl">
+                <div class="heading_1 wow animate__animated animate__fadeInUp" id="beyond">
+                   Uma's<br> Kitchen
+                </div>
+                <br>   <br>   <br>   <br>   <br>   <br> 
+                <!-- <p class="wow animate__animated animate__fadeInUp" style="color: white;">
+                    Our architects breathe life into dreams, creating
+                    environments where innovation meets tradition,
+                    and spaces transcend mere structures
+                    
+                </p> -->
+         
+
+            
+            </div>
+        </section>
+        <br>
+
+       <section class="gallery">
+<img src="images/UmasKitchen/12.jpg" alt=""> <img src="images/UmasKitchen/467358067_17885809239138713_3320466810913732144_n.jpg" alt=""><img src="images/UmasKitchen/IMG_6013.JPG" alt=""> <img src="images/UmasKitchen/IMG_6014.JPG" alt=""> <img src="images/UmasKitchen/IMG_6274.JPG" alt="">
+       </section>
+
+        <footer>
+            <div class="container-xl">
+                <div class="footer">
+                    <div>
+                        <a href="index.html" class="logo wow animate__animated animate__fadeInUp">
+                            <img src="logo.png" alt="" style="height: 300px; width: 300px;">
+                        </a>
+                        <div class="wow animate__animated animate__fadeInUp">
+                            <p>Follow Us</p>
+                            <span> <a href="https://www.instagram.com/bricky_box?igsh=MXVsbTZweWZ0eHV1Yg==">.instagram</a></span>
+                            <span> <a href="https://www.facebook.com/share/1EKoUywx1z/">.facebook</a></span>
+                            <span>  <a href="https://wa.me/9840279082" target="_blank">.whatsApp</a></span>
+                        </div>
+                    </div>
+                    <div class="wow animate__animated animate__fadeInUp">
+                        <p> <b style="font-weight: bold; color: maroon; font-size: large;">Address</b> <br>9, Ponniamman Koil 2nd St, extension, <br>Sholinganallur, Chennai, Tamil Nadu 600119
+                            <br><b style="font-weight: bold; color: maroon; font-size: large;">Phone Number</b> <br> 9840279082,9080302072 <br> <b style="font-weight: bold; color: maroon; font-size: large;">Email Id</b> <br>brickyboxstudio@gmail.com</p>
+                    </div>
+                  
+
+                  
+                </div>
+                <br>
+                <hr>
+                <small> &copy; The Bricky Box Associates 2025. All Rights Reserved</small>
+            </div>
+        </footer>
+        <script>
+            const imgs = document.querySelectorAll(".gallery img")
+        
+        scrolling()
+        window.onscroll = scrolling
+        
+        function scrolling() {
+          const viewportHeight = window.innerHeight
+          imgs.forEach(img => {
+            if (img.getBoundingClientRect().top < viewportHeight) {
+              img.style.animationPlayState = "running"
+            }
+          })
+        }
+        </script>
+    </main>
+    <script src="odometer.js"></script>
+    <script src="wow.js"></script>
+    <!-- <script src="lenis.js"></script> -->
+    <script>
+        const wow = new WOW();
+        wow.init();
+        const lenis = new Lenis();
+        const stats = document.querySelector('.stats');
+        let odometerStarted = false;
+
+        function raf(time) {
+            lenis.raf(time);
+            const statsPosition = stats.getBoundingClientRect();
+            if (!odometerStarted && statsPosition.top <= window.innerHeight && statsPosition.bottom >= 0) {
+                const odometers = document.querySelectorAll('.odometer');
+                odometers.forEach(odometer => {
+                    odometer.innerHTML = odometer.getAttribute('data-value');
+                });
+                odometerStarted = true;
+            }
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        
+        const menu = document.querySelector(".menu");
+        const menuContainer = document.querySelector(".menu_container");
+        let menuToggle = false;
+        menu.addEventListener("click", ()=>{
+            if(!menuToggle){
+                menuContainer.style.transform = "translateX(0)";
+                lenis.stop();
+            }
+            else{
+                menuContainer.style.transform = "translateX(100%)";
+                lenis.start();
+            }
+            
+            menuToggle = !menuToggle
+        })
+
+        function initComparisons() {
+  var x, i;
+  /* Find all elements with an "overlay" class: */
+  x = document.getElementsByClassName("img-comp-overlay");
+  for (i = 0; i < x.length; i++) {
+    /* Once for each "overlay" element:
+    pass the "overlay" element as a parameter when executing the compareImages function: */
+    compareImages(x[i]);
+  }
+  function compareImages(img) {
+    var slider, img, clicked = 0, w, h;
+    /* Get the width and height of the img element */
+    w = img.offsetWidth;
+    h = img.offsetHeight;
+    /* Set the width of the img element to 50%: */
+    img.style.width = (w / 2) + "px";
+    /* Create slider: */
+    slider = document.createElement("DIV");
+    slider.setAttribute("class", "img-comp-slider");
+    /* Insert slider */
+    img.parentElement.insertBefore(slider, img);
+    /* Position the slider in the middle: */
+    slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
+    slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+    /* Execute a function when the mouse button is pressed: */
+    slider.addEventListener("mousedown", slideReady);
+    /* And another function when the mouse button is released: */
+    window.addEventListener("mouseup", slideFinish);
+    /* Or touched (for touch screens: */
+    slider.addEventListener("touchstart", slideReady);
+     /* And released (for touch screens: */
+    window.addEventListener("touchend", slideFinish);
+    function slideReady(e) {
+      /* Prevent any other actions that may occur when moving over the image: */
+      e.preventDefault();
+      /* The slider is now clicked and ready to move: */
+      clicked = 1;
+      /* Execute a function when the slider is moved: */
+      window.addEventListener("mousemove", slideMove);
+      window.addEventListener("touchmove", slideMove);
+    }
+    function slideFinish() {
+      /* The slider is no longer clicked: */
+      clicked = 0;
+    }
+    function slideMove(e) {
+      var pos;
+      /* If the slider is no longer clicked, exit this function: */
+      if (clicked == 0) return false;
+      /* Get the cursor's x position: */
+      pos = getCursorPos(e)
+      /* Prevent the slider from being positioned outside the image: */
+      if (pos < 0) pos = 0;
+      if (pos > w) pos = w;
+      /* Execute a function that will resize the overlay image according to the cursor: */
+      slide(pos);
+    }
+    function getCursorPos(e) {
+      var a, x = 0;
+      e = (e.changedTouches) ? e.changedTouches[0] : e;
+      /* Get the x positions of the image: */
+      a = img.getBoundingClientRect();
+      /* Calculate the cursor's x coordinate, relative to the image: */
+      x = e.pageX - a.left;
+      /* Consider any page scrolling: */
+      x = x - window.pageXOffset;
+      return x;
+    }
+    function slide(x) {
+      /* Resize the image: */
+      img.style.width = x + "px";
+      /* Position the slider: */
+      slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+    }
+  }
+}
+    </script>
+    <script>
+        initComparisons();
+        </script>
+</body>
+</html>
